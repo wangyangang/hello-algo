@@ -2,7 +2,7 @@
 from binary_tree.tree import Node, root
 from collections import deque
 
-
+# 广度优先的遍历采用 “队列” 来实现
 def bfs(node=None):
     q = deque([node])
     while q:
