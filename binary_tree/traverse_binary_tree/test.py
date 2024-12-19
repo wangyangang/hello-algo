@@ -1,78 +1,36 @@
-class ArrayBinaryTree:
-    """数组表示下的二叉树类"""
 
-    def __init__(self, arr: list[int | None]):
-        """构造方法"""
-        self._tree = list(arr)
+from typing import Optional, List
 
-    def size(self):
-        """列表容量"""
-        return len(self._tree)
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
 
-    def val(self, i: int) -> int | None:
-        """获取索引为 i 节点的值"""
-        # 若索引越界，则返回 None ，代表空位
-        if i < 0 or i >= self.size():
-            return None
-        return self._tree[i]
 
-    def left(self, i: int) -> int | None:
-        """获取索引为 i 节点的左子节点的索引"""
-        return 2 * i + 1
+class Solution:
+    def __init__(self):
+        self.ret = []
 
-    def right(self, i: int) -> int | None:
-        """获取索引为 i 节点的右子节点的索引"""
-        return 2 * i + 2
+    def inorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
+        ret = []
 
-    def parent(self, i: int) -> int | None:
-        """获取索引为 i 节点的父节点的索引"""
-        return (i - 1) // 2
-
-    def level_order(self) -> list[int]:
-        """层序遍历"""
-        self.res = []
-        # 直接遍历数组
-        for i in range(self.size()):
-            if self.val(i) is not None:
-                self.res.append(self.val(i))
-        return self.res
-
-    def dfs(self, i: int, order: str):
-        """深度优先遍历"""
-        if self.val(i) is None:
-            return
-        # 前序遍历
-        if order == "pre":
-            self.res.append(self.val(i))
-        self.dfs(self.left(i), order)
-        # 中序遍历
-        if order == "in":
-            self.res.append(self.val(i))
-        self.dfs(self.right(i), order)
-        # 后序遍历
-        if order == "post":
-            self.res.append(self.val(i))
-
-    def pre_order(self) -> list[int]:
-        """前序遍历"""
-        self.res = []
-        self.dfs(0, order="pre")
-        return self.res
-
-    def in_order(self) -> list[int]:
-        """中序遍历"""
-        self.res = []
-        self.dfs(0, order="in")
-        return self.res
-
-    def post_order(self) -> list[int]:
-        """后序遍历"""
-        self.res = []
-        self.dfs(0, order="post")
-        return self.res
+        def func(node):
+            if node is None:
+                return
+            func(node.left)
+            ret.append(node.val)
+            func(node.right)
+        func(root)
+        return ret
 
 
 if __name__ == '__main__':
-    tree = ArrayBinaryTree([1,2,3,4,5,6,7])
-    ret = tree.post_order()
+    n1 = TreeNode(1)
+    n2 = TreeNode(2)
+    n3 = TreeNode(3)
+    n1.right = n2
+    n2.left = n3
+    s = Solution()
+    ret = s.inorderTraversal(n1)
     print(ret)
